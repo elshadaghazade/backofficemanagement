@@ -51,6 +51,18 @@ const SESSION_ACTIVE_COOKIE_OPTIONS: Partial<ResponseCookie> = {
   maxAge: 60 * 60 * 24,
 } as const;
 
+export type SignUpResponseType = z.infer<typeof SignUpSchema>;
+export type SignUpRequestType = {
+    accessToken: string;
+    user: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        role: string;
+    };
+}
+
 /**
  * @swagger
  * /api/auth/sign-up:
@@ -261,7 +273,7 @@ export const POST = async (req: NextRequest) => {
 
   await createRedisSession(dbSession.id, redisSession);
 
-  const responseBody = {
+  const response = NextResponse.json<SignUpRequestType>({
     accessToken,
     user: {
       id: user.id,
@@ -270,9 +282,7 @@ export const POST = async (req: NextRequest) => {
       email: user.email,
       role: 'user',
     },
-  };
-
-  const response = NextResponse.json(responseBody, { status: 201 });
+  }, { status: 201 });
 
   response.cookies.set('refresh_token', refreshToken, REFRESH_COOKIE_OPTIONS);
   response.cookies.set('session_active', 'true', SESSION_ACTIVE_COOKIE_OPTIONS);

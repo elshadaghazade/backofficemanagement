@@ -22,6 +22,18 @@ const SignInSchema = z.object({
     .max(128, 'password must be at most 128 symbols'),
 });
 
+export type SignInRequestPayloadType = z.infer<typeof SignInSchema>;
+export type SignInResponseType = {
+    accessToken: string;
+    user: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        role: string;
+    };
+}
+
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
@@ -292,7 +304,7 @@ export const POST = async (req: NextRequest) => {
 
   await createRedisSession(dbSession.id, redisSession);
 
-  const response = NextResponse.json({
+  const response = NextResponse.json<SignInResponseType>({
     accessToken,
     user: {
       id: user.id,
