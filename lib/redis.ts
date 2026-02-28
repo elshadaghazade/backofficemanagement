@@ -1,13 +1,14 @@
 import "server-only";
 import { config } from "@/config";
 import Redis, { type RedisOptions } from "ioredis";
+import { logger } from "./logger";
 
 const REDIS_URL = config.db.redis.url;
 
 const options: RedisOptions = {
     retryStrategy(times) {
         const delay = Math.min(times * 200, 10_000);
-        console.warn(`[Redis] reconnect attempt #${times}, waiting ${delay}ms`);
+        logger.warn(`[Redis] reconnect attempt #${times}, waiting ${delay}ms`);
         return delay;
     },
     keepAlive: 30_000,
@@ -20,12 +21,12 @@ declare global {
 const createRedisClient = (): Redis => {
     const client = new Redis(REDIS_URL, options);
 
-    client.on("connect", () => console.info("[Redis] connected"));
-    client.on("ready", () => console.info("[Redis] ready to accept commands"));
-    client.on("error", (err: Error) => console.error("[Redis] error:", err.message));
-    client.on("close", () => console.warn("[Redis] connection closed"));
-    client.on("reconnecting", () => console.warn("[Redis] reconnecting..."));
-    client.on("end", () => console.warn("[Redis] connection ended — no more reconnects"));
+    client.on("connect", () => logger.info("[Redis] connected"));
+    client.on("ready", () => logger.info("[Redis] ready to accept commands"));
+    client.on("error", (err: Error) => logger.error(`[Redis] error: ${err.message}`));
+    client.on("close", () => logger.warn("[Redis] connection closed"));
+    client.on("reconnecting", () => logger.warn("[Redis] reconnecting..."));
+    client.on("end", () => logger.warn("[Redis] connection ended — no more reconnects"));
 
     return client;
 };
