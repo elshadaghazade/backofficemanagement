@@ -93,7 +93,7 @@ export const GET = withAuth(async (_req, _user) => {
 /**
  * @swagger
  * /api/dashboard:
- *   post:
+ *   put:
  *     summary: Update active home page content (admin only)
  *     description: >
  *       Creates or updates the currently active home page record. Requires an authenticated admin user.
@@ -185,7 +185,7 @@ export const GET = withAuth(async (_req, _user) => {
  *       bearerFormat: JWT
  */
 
-export const POST = withAuth(async (req, user) => {
+export const PUT = withAuth(async (req, user) => {
     if (user.role !== 'admin') {
         return NextResponse.json({ error: 'Forbidden'}, { status: 403 })
     }
