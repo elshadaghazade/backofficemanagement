@@ -1,14 +1,14 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { axiosBaseQuery } from '@/lib/axiosBaseQuery';
 import { clearAccessToken } from '@/lib/axiosBaseQuery';
-import type {
-  SignInRequestPayloadType,
-  SignInResponseType
-} from '@/app/api/auth/signin/route';
-import type {
-  SignUpRequestType,
-  SignUpResponseType
-} from '@/app/api/auth/signup/route';
+import type { 
+  SignInRequestPayloadType, 
+  SignInResponseType 
+} from '@/lib/validators/signin';
+import type { 
+  SignUpRequestType, 
+  SignUpResponseType 
+} from '@/lib/validators/signup';
 
 export interface RefreshResponse {
   accessToken: string;

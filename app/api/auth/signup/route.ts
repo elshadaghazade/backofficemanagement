@@ -9,31 +9,7 @@ import { signAccessToken, signRefreshToken, type TokenPayload } from '@/lib/jwt'
 import { createRedisSession } from '@/lib/tokenStore';
 import type { RedisSession } from '@/lib/tokenStore';
 import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-
-const SignUpSchema = z.object({
-  firstName: z
-    .string()
-    .trim()
-    .min(2, 'first name must be at least 2 symbols'),
-
-  lastName: z
-    .string()
-    .trim()
-    .min(2, 'last name must be at least 2 symbols'),
-
-  email: z
-    .email('email is required')
-    .trim()
-    .toLowerCase()
-    .max(255, 'email must be at most 255 characters'),
-
-  password: z
-    .string()
-    .min(8, 'password must be at least 8 characters')
-    .max(128, 'password must be at most 128 characters')
-    .regex(/[A-Z]/, 'password must contain at least one uppercase letter')
-    .regex(/[0-9]/, 'password must contain at least one number'),
-});
+import { type SignUpResponseType, SignUpSchema } from '@/lib/validators/signup';
 
 const REFRESH_COOKIE_OPTIONS: Partial<ResponseCookie> = {
   httpOnly: true,
@@ -50,18 +26,6 @@ const SESSION_ACTIVE_COOKIE_OPTIONS: Partial<ResponseCookie> = {
   path: '/',
   maxAge: 60 * 60 * 24,
 } as const;
-
-export type SignUpResponseType = z.infer<typeof SignUpSchema>;
-export type SignUpRequestType = {
-    accessToken: string;
-    user: {
-        id: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        role: string;
-    };
-}
 
 /**
  * @swagger
@@ -273,7 +237,7 @@ export const POST = async (req: NextRequest) => {
 
   await createRedisSession(dbSession.id, redisSession);
 
-  const response = NextResponse.json<SignUpRequestType>({
+  const response = NextResponse.json<SignUpResponseType>({
     accessToken,
     user: {
       id: user.id,

@@ -7,32 +7,7 @@ import { getPrisma } from '@/lib/prisma';
 import { signAccessToken, signRefreshToken, type TokenPayload } from '@/lib/jwt';
 import { createRedisSession } from '@/lib/tokenStore';
 import type { RedisSession } from '@/lib/tokenStore';
-
-const SignInSchema = z.object({
-  email: z
-    .email('email is wrong')
-    .trim()
-    .toLowerCase()
-    .min(1, 'email is required')
-    .max(255, 'email must be at most 255 symbols'),
-
-  password: z
-    .string()
-    .min(1, 'password is required')
-    .max(128, 'password must be at most 128 symbols'),
-});
-
-export type SignInRequestPayloadType = z.infer<typeof SignInSchema>;
-export type SignInResponseType = {
-    accessToken: string;
-    user: {
-        id: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        role: string;
-    };
-}
+import { type SignInResponseType, SignInSchema } from '@/lib/validators/signin';
 
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
