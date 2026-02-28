@@ -7,6 +7,7 @@ export const configSchema = z.object({
             user: z.string().min(1),
             password: z.string().min(1),
             port: z.number().int().positive().min(1),
+            database_url: z.string().min(1)
         }),
         redis: z.object({
             port: z.number().int().positive().min(1),
@@ -30,7 +31,8 @@ export const config = configSchema.parse({
             database: process.env.POSTGRES_DB ?? '',
             user: process.env.POSTGRES_USER ?? '',
             password: process.env.POSTGRES_PASSWORD ?? '',
-            port: Number(process.env.POSTGRES_PORT ?? 5432)
+            port: Number(process.env.POSTGRES_PORT ?? 5432),
+            database_url: process.env.DATABASE_URL ?? '',
         },
         redis: {
             port: Number(process.env.REDIS_PORT ?? 6379),
