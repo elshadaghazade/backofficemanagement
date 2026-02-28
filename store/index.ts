@@ -1,12 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { authApi } from './api/authApi';
+import { dashboardApi } from './api/dashboardApi';
 
 export const store = configureStore({
     reducer: {
         [authApi.reducerPath]: authApi.reducer,
+        [dashboardApi.reducerPath]: dashboardApi.reducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(
-        authApi.middleware
+        authApi.middleware,
+        dashboardApi.middleware
     )
 });
 

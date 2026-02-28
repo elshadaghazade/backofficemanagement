@@ -1,4 +1,4 @@
-
+export const dynamic = 'force-dynamic';
 import type { DecodedToken } from "@/lib/jwt";
 import { withAuth } from "@/lib/withAuth";
 import { NextResponse } from "next/server";
