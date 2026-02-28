@@ -1,3 +1,4 @@
+import { UserRole } from './generated/prisma/enums';
 import { getRedis } from './redis';
 
 const SESSION_TTL = 60 * 60 * 24;
@@ -6,7 +7,8 @@ export interface RedisSession {
     userId: string;
     sessionId: string;
     firstName: string;
-    role: string;
+    lastName: string;
+    role: UserRole;
     refreshJti: string;
 }
 

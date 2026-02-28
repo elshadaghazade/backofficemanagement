@@ -199,6 +199,7 @@ export const POST = async (req: NextRequest) => {
       email: true,
       password: true,
       status: true,
+      role: true,
       loginsCount: true,
     },
   });
@@ -263,7 +264,8 @@ export const POST = async (req: NextRequest) => {
     userId: user.id,
     sessionId: dbSession.id,
     firstName: user.firstName,
-    role: 'user',
+    lastName: user.lastName,
+    role: user.role ?? 'user',
   } as const;
 
   const { token: accessToken } = await signAccessToken(tokenPayload);
@@ -273,7 +275,8 @@ export const POST = async (req: NextRequest) => {
     userId: user.id,
     sessionId: dbSession.id,
     firstName: user.firstName,
-    role: 'user',
+    lastName: user.lastName,
+    role: user.role ?? 'user',
     refreshJti,
   };
 

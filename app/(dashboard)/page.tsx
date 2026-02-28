@@ -1,35 +1,22 @@
 'use client';
 
-import { useSignOutMutation } from "@/store/api/authApi";
-import { Button } from "@heroui/react";
-import { useRouter } from "next/navigation";
-import { ReactEventHandler, useCallback, useEffect } from "react";
-import PageWrapper from "../components/PageWrapper";
+import { useLazyMeQuery } from "@/store/api/authApi";
+import { useEffect } from "react";
+import PageWrapper from "@/app/components/PageWrapper";
+import Dashboard from "@/app/components/Dashboard";
 
 export default function Home() {
 
-  const [signOut, { isSuccess }] = useSignOutMutation();
-  const router = useRouter();
+  const [getMe, { data, isLoading: userInfoLoading }] = useLazyMeQuery();
 
   useEffect(() => {
-    if (!isSuccess) {
-      return;
-    }
-
-    router.refresh();
-
-  }, [isSuccess, router]);
-
-  const logOutHandler: ReactEventHandler = useCallback((e) => {
-    e.preventDefault();
-
-    signOut();
+    getMe();
   }, []);
 
   return (
     <PageWrapper>
       <div className="min-h-[300px] flex flex-wrap items-center justify-center">
-        <h1>Welcome, <Button onClick={logOutHandler}>Log out</Button></h1>
+        {data?.userInfo && !userInfoLoading ? <Dashboard userInfo={data.userInfo} /> : <h1>Loading...</h1>}
       </div>
     </PageWrapper>
   );

@@ -221,6 +221,7 @@ export const POST = async (req: NextRequest) => {
     userId: user.id,
     sessionId: dbSession.id,
     firstName: user.firstName,
+    lastName: user.lastName,
     role: 'user',
   } as const;
 
@@ -231,6 +232,7 @@ export const POST = async (req: NextRequest) => {
     userId: user.id,
     sessionId: dbSession.id,
     firstName: user.firstName,
+    lastName: user.lastName,
     role: 'user',
     refreshJti,
   };

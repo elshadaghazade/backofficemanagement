@@ -1,6 +1,7 @@
 import { config } from '@/config';
 import { SignJWT, jwtVerify } from 'jose';
 import { v4 as uuid } from 'uuid';
+import type { UserRole } from './generated/prisma/client';
 
 const ACCESS_SECRET = new TextEncoder().encode(config.jwt.access_token_secret);
 const REFRESH_SECRET = new TextEncoder().encode(config.jwt.refresh_token_secret);
@@ -9,7 +10,8 @@ export interface TokenPayload {
     userId: string;
     sessionId: string;
     firstName: string;
-    role: string;
+    lastName: string;
+    role: UserRole;
 }
 
 export interface DecodedToken extends TokenPayload {

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { UserRole } from '../generated/prisma/enums';
 
 export const SignInSchema = z.object({
   email: z
@@ -22,6 +23,6 @@ export type SignInResponseType = {
         firstName: string;
         lastName: string;
         email: string;
-        role: string;
+        role: UserRole;
     };
 }

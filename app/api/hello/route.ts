@@ -11,7 +11,7 @@
 import { withAuth } from "@/lib/withAuth";
 import { NextResponse } from "next/server";
 
-export const GET = withAuth(async (req, user) => {
+export const GET = withAuth(async (_, user) => {
 
     return NextResponse.json({ message: user.firstName });
 })

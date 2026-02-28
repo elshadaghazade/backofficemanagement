@@ -9,6 +9,7 @@ import type {
   SignUpRequestType, 
   SignUpResponseType 
 } from '@/lib/validators/signup';
+import { AuthMeResponseType } from '@/app/api/auth/me/route';
 
 export interface RefreshResponse {
   accessToken: string;
@@ -47,6 +48,13 @@ export const authApi = createApi({
         }
       },
     }),
+
+    me: builder.query<AuthMeResponseType, void>({
+      query: () => ({
+        url: '/auth/me',
+        method: 'GET'
+      })
+    })
   }),
 });
 
@@ -54,4 +62,6 @@ export const {
   useSignInMutation,
   useSignUpMutation,
   useSignOutMutation,
+  useMeQuery,
+  useLazyMeQuery
 } = authApi;

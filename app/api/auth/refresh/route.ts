@@ -77,6 +77,7 @@ export const POST = async (req: NextRequest) => {
     userId: session.userId,
     sessionId: decoded.sessionId,
     firstName: session.firstName,
+    lastName: session.lastName,
     role: session.role,
   };
 
