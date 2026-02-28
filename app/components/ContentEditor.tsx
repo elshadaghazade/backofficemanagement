@@ -3,6 +3,7 @@ import { Button } from "@heroui/react";
 import { useCallback, useEffect, useState, type FC } from "react";
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import { toast } from "react-toastify";
 
 interface ContentEditorPropsType {
     content: string;
@@ -11,20 +12,25 @@ interface ContentEditorPropsType {
 const ContentEditor: FC<ContentEditorPropsType> = ({ content: _content }) => {
 
     const [content, setContent] = useState(_content);
-    const [putContent, { isSuccess: contentSaved }] = usePutContentMutation();
+    const [putContent, { isSuccess: contentSaved, isLoading: contentSaving }] = usePutContentMutation();
 
     const saveContent = useCallback(() => {
         putContent({ content });
     }, [content]);
 
     useEffect(() => {
-        
+        if (contentSaved) {
+            toast.success('Content saved', {
+                autoClose: 7000,
+                position: 'top-right'
+            })
+        }
     }, [contentSaved]);
 
     return (
         <div className="flex flex-col gap-[10px]">
         <ReactQuill theme="snow" value={content} onChange={setContent} />
-        <Button onClick={saveContent} fullWidth variant="primary">SAVE</Button>
+        <Button isDisabled={contentSaving} onClick={saveContent} fullWidth variant="primary">SAVE</Button>
         </div>
     );
 }

@@ -1,0 +1,11 @@
+{
+    "screencastMode.keyboardOptions": {
+        "showCommandGroups": true
+    },
+    "typescript.tsserver.maxTsServerMemory": 4096,
+    "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+
+    "typescript.tsserver.watchOptions": { "watchDirectory": "useFsEvents" },
+    "javascript.suggest.autoImports": false,
+    "typescript.suggest.autoImports": true,
+}
