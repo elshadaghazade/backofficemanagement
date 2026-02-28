@@ -1,4 +1,4 @@
-import { redis } from './redis';
+import { getRedis } from './redis';
 
 const SESSION_TTL = 60 * 60 * 24;
 
@@ -11,7 +11,7 @@ export interface RedisSession {
 }
 
 export const createRedisSession = async (sessionId: string, data: RedisSession) => {
-    await redis.set(
+    await getRedis().set(
         `session:${sessionId}`,
         JSON.stringify(data),
         'EX', SESSION_TTL,
@@ -19,13 +19,13 @@ export const createRedisSession = async (sessionId: string, data: RedisSession) 
 }
 
 export const getRedisSession = async (sessionId: string): Promise<RedisSession | null> => {
-    const raw = await redis.get(`session:${sessionId}`);
+    const raw = await getRedis().get(`session:${sessionId}`);
     return raw ? JSON.parse(raw) : null;
 }
 
 export const rotateRefreshJti = async (sessionId: string, newRefreshJti: string) => {
     const key = `session:${sessionId}`;
-    const raw = await redis.get(key);
+    const raw = await getRedis().get(key);
     if (!raw) {
         return false;
     }
@@ -33,10 +33,10 @@ export const rotateRefreshJti = async (sessionId: string, newRefreshJti: string)
     const current: RedisSession = JSON.parse(raw);
     const updated: RedisSession = { ...current, refreshJti: newRefreshJti };
 
-    await redis.set(key, JSON.stringify(updated), 'KEEPTTL');
+    await getRedis().set(key, JSON.stringify(updated), 'KEEPTTL');
     return true;
 }
 
 export async function deleteRedisSession(sessionId: string) {
-    await redis.del(`session:${sessionId}`);
+    await getRedis().del(`session:${sessionId}`);
 }

@@ -1,8 +1,10 @@
 
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { prisma } from '@/lib/prisma';
+import { getPrisma } from '@/lib/prisma';
 import { signAccessToken, signRefreshToken, type TokenPayload } from '@/lib/jwt';
 import { createRedisSession } from '@/lib/tokenStore';
 import type { RedisSession } from '@/lib/tokenStore';
@@ -205,7 +207,7 @@ export const POST = async (req: NextRequest) => {
 
   const { firstName, lastName, email, password } = parsed.data;
 
-  const existing = await prisma.user.findUnique({
+  const existing = await getPrisma().user.findUnique({
     where: { email },
     select: { id: true }
   });
@@ -219,7 +221,7 @@ export const POST = async (req: NextRequest) => {
 
   const passwordHash = await bcrypt.hash(password, 12);
 
-  const { user, dbSession } = await prisma.$transaction(async (tx) => {
+  const { user, dbSession } = await getPrisma().$transaction(async (tx) => {
     const user = await tx.user.create({
       data: {
         firstName,

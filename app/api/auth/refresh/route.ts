@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyRefreshToken, signAccessToken, signRefreshToken } from '@/lib/jwt';
 import { getRedisSession, rotateRefreshJti } from '@/lib/tokenStore';
