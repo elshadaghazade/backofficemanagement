@@ -209,10 +209,25 @@ export const POST = async (req: NextRequest) => {
       },
     });
 
-    const dbSession = await tx.session.create({
-      data: { userId: user.id },
-      select: { id: true }
+    let dbSession = await tx.session.findFirst({
+      where: {
+        userId: user.id
+      },
+      select: {
+        id: true
+      }
     });
+
+    if (!dbSession) {
+      dbSession = await tx.session.create({
+        data: {
+          userId: user.id
+        },
+        select: {
+          id: true
+        }
+      });
+    }
 
     return { user, dbSession };
   });
@@ -226,7 +241,7 @@ export const POST = async (req: NextRequest) => {
   } as const;
 
   const { token: accessToken } = await signAccessToken(tokenPayload);
-  const { token: refreshToken, jti: refreshJti } = await signRefreshToken(tokenPayload);
+  const { token: refreshToken, jti: refreshJti } = await signRefreshToken(dbSession.id, tokenPayload);
 
   const redisSession: RedisSession = {
     userId: user.id,

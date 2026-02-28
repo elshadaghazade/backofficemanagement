@@ -35,8 +35,8 @@ export const signAccessToken = async (payload: TokenPayload) => {
     }
 }
 
-export const signRefreshToken = async (payload: TokenPayload) => {
-    const jti = uuid();
+export const signRefreshToken = async (sessionId: string, payload: TokenPayload) => {
+    const jti = sessionId;
 
     const token = await new SignJWT({ ...payload })
         .setProtectedHeader({ alg: 'HS256' })

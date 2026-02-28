@@ -232,14 +232,27 @@ export const POST = async (req: NextRequest) => {
   };
 
   await getPrisma().$transaction(async tx => {
-    dbSession = await tx.session.create({
-      data: {
+    const _dbSession = await tx.session.findFirst({
+      where: {
         userId: user.id
       },
       select: {
         id: true
       }
     });
+
+    if (!_dbSession) {
+      dbSession = await tx.session.create({
+        data: {
+          userId: user.id
+        },
+        select: {
+          id: true
+        }
+      });
+    } else {
+      dbSession = _dbSession;
+    }
 
     await tx.user.update({
       where: {
@@ -269,7 +282,7 @@ export const POST = async (req: NextRequest) => {
   } as const;
 
   const { token: accessToken } = await signAccessToken(tokenPayload);
-  const { token: refreshToken, jti: refreshJti } = await signRefreshToken(tokenPayload);
+  const { token: refreshToken, jti: refreshJti } = await signRefreshToken(dbSession.id, tokenPayload);
 
   const redisSession: RedisSession = {
     userId: user.id,

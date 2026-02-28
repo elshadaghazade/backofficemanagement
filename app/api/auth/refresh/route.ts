@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyRefreshToken, signAccessToken, signRefreshToken } from '@/lib/jwt';
-import { getRedisSession, rotateRefreshJti } from '@/lib/tokenStore';
+import { deleteRedisSession, getRedisSession, rotateRefreshJti } from '@/lib/tokenStore';
 
 /**
  * @swagger
@@ -65,12 +65,12 @@ export const POST = async (req: NextRequest) => {
 
   const decoded = await verifyRefreshToken(refreshToken);
   if (!decoded) {
-    return clearCookiesAndUnauthorized();
+    return await clearCookiesAndUnauthorized();
   }
 
   const session = await getRedisSession(decoded.sessionId);
   if (!session || session.refreshJti !== decoded.jti) {
-    return clearCookiesAndUnauthorized();
+    return await clearCookiesAndUnauthorized();
   }
 
   const payload = {
@@ -82,11 +82,11 @@ export const POST = async (req: NextRequest) => {
   };
 
   const { token: newAccessToken } = await signAccessToken(payload);
-  const { token: newRefreshToken, jti: newJti } = await signRefreshToken(payload);
+  const { token: newRefreshToken, jti: newJti } = await signRefreshToken(session.sessionId, payload);
 
   const patched = await rotateRefreshJti(decoded.sessionId, newJti);
   if (!patched) {
-    return clearCookiesAndUnauthorized();
+    return await clearCookiesAndUnauthorized();
   }
 
   const response = NextResponse.json({ accessToken: newAccessToken });
@@ -101,9 +101,14 @@ export const POST = async (req: NextRequest) => {
   return response;
 }
 
-const clearCookiesAndUnauthorized = () => {
+const clearCookiesAndUnauthorized = async () => {
   const res = NextResponse.json({ error: 'session expired' }, { status: 401 });
+  const jti = res.cookies.get('refresh_token');
+
   res.cookies.delete('refresh_token');
   res.cookies.delete('session_active');
+  if (jti?.value) {
+    await deleteRedisSession(jti.value);
+  }
   return res;
 }
