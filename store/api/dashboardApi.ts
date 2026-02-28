@@ -1,6 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { axiosBaseQuery } from '@/lib/axiosBaseQuery';
 import type { DashboardResponseType } from '@/app/api/dashboard/route';
+import type { 
+    DashboardContentPayloadRequest, 
+    DashboardContentResponseType 
+} from '@/lib/validators/dashboard-content';
 
 export const dashboardApi = createApi({
   reducerPath: 'dashboardApi',
@@ -12,10 +16,18 @@ export const dashboardApi = createApi({
         method: 'GET'
       }),
     }),
+    putContent: builder.mutation<DashboardContentResponseType, DashboardContentPayloadRequest>({
+        query: data => ({
+            url: '/dashboard',
+            method: 'PUT',
+            data
+        })
+    })
   }),
 });
 
 export const {
   useGetContentQuery,
-  useLazyGetContentQuery
+  useLazyGetContentQuery,
+  usePutContentMutation
 } = dashboardApi;
