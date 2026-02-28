@@ -21,6 +21,7 @@ import Footer from '@/app/components/Footer';
 import Logo from '@/app/components/Logo';
 import AuthCardHeader from '@/app/components/AuthCardHeader';
 import ErrorMessages from '@/app/components/ErrorMessages';
+import PageWrapper from '@/app/components/PageWrapper';
 
 interface FormState {
     email: string;
@@ -123,108 +124,100 @@ const SignInClient: FC = () => {
     }
 
     return (
-        <main className="min-h-screen flex items-center justify-center bg-background px-4">
+        <PageWrapper>
 
-            <div className="pointer-events-none fixed top-[-20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-violet-600/10 blur-[120px]" />
+            <Card className="w-full border bg-content3 bg-content2 backdrop-blur-sm shadow-2xl">
+                <AuthCardHeader
+                    title='Welcome back'
+                    description='Sign in to your account to continue'
+                />
 
-            <div className="relative w-full max-w-md">
+                <Form onSubmit={handleSubmit}>
+                    <Card.Content className="flex flex-col gap-5 pt-4">
 
-                <Logo />
+                        {serverError && (
+                            <Alert status='danger'>
+                                <Alert.Description>{serverError}</Alert.Description>
+                            </Alert>
+                        )}
 
-                <Card className="w-full border bg-content3 bg-content2 backdrop-blur-sm shadow-2xl">
-                    <AuthCardHeader
-                        title='Welcome back'
-                        description='Sign in to your account to continue'
-                    />
-
-                    <Form onSubmit={handleSubmit}>
-                        <Card.Content className="flex flex-col gap-5 pt-4">
-
-                            {serverError && (
-                                <Alert status='danger'>
-                                    <Alert.Description>{serverError}</Alert.Description>
-                                </Alert>
-                            )}
-
-                            <TextField
-                                name="email"
-                                type="email"
-                                value={values.email}
-                                onChange={handleChange('email')}
-                                onBlur={handleBlur('email')}
-                                isInvalid={!!fieldErrors.email?.length}
-                                isDisabled={isLoading}
-                                fullWidth
-                            >
-                                <Label className="text-foreground-secondary text-sm">Email address</Label>
-                                <Input
-                                    placeholder="youremail@example.com"
-                                    variant="secondary"
-                                    className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
+                        <TextField
+                            name="email"
+                            type="email"
+                            value={values.email}
+                            onChange={handleChange('email')}
+                            onBlur={handleBlur('email')}
+                            isInvalid={!!fieldErrors.email?.length}
+                            isDisabled={isLoading}
+                            fullWidth
+                        >
+                            <Label className="text-foreground-secondary text-sm">Email address</Label>
+                            <Input
+                                placeholder="youremail@example.com"
+                                variant="secondary"
+                                className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
                                focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
-                                />
-                                <ErrorMessages messages={fieldErrors.email} />
-                            </TextField>
+                            />
+                            <ErrorMessages messages={fieldErrors.email} />
+                        </TextField>
 
-                            <TextField
-                                name="password"
-                                type="password"
-                                value={values.password}
-                                onChange={handleChange('password')}
-                                onBlur={handleBlur('password')}
-                                isInvalid={!!fieldErrors.password?.length}
-                                isDisabled={isLoading}
-                                fullWidth
-                            >
-                                <div className="flex items-center justify-between">
-                                    <Label className="text-foreground-secondary text-sm">Password</Label>
-                                    <Link href="/auth/forgot-password" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">
-                                        Forgot password?
-                                    </Link>
-                                </div>
-                                <Input
-                                    placeholder="Your password"
-                                    variant="secondary"
-                                    className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
+                        <TextField
+                            name="password"
+                            type="password"
+                            value={values.password}
+                            onChange={handleChange('password')}
+                            onBlur={handleBlur('password')}
+                            isInvalid={!!fieldErrors.password?.length}
+                            isDisabled={isLoading}
+                            fullWidth
+                        >
+                            <div className="flex items-center justify-between">
+                                <Label className="text-foreground-secondary text-sm">Password</Label>
+                                <Link href="/auth/forgot-password" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">
+                                    Forgot password?
+                                </Link>
+                            </div>
+                            <Input
+                                placeholder="Your password"
+                                variant="secondary"
+                                className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
                                focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
-                                />
-                                <ErrorMessages messages={fieldErrors.password} />
-                            </TextField>
+                            />
+                            <ErrorMessages messages={fieldErrors.password} />
+                        </TextField>
 
-                        </Card.Content>
+                    </Card.Content>
 
-                        <Card.Footer className="flex flex-col gap-4 pt-2 pb-6">
-                            <Button
-                                type="submit"
-                                fullWidth
-                                isDisabled={isLoading}
-                                className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700
+                    <Card.Footer className="flex flex-col gap-4 pt-2 pb-6">
+                        <Button
+                            type="submit"
+                            fullWidth
+                            isDisabled={isLoading}
+                            className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700
                            text-foreground font-medium h-11 rounded-xl transition-colors
                            disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {isLoading ? (
-                                    <span className="flex items-center gap-2">
-                                        <Spinner size="sm" className="text-white/70" />
-                                        Signing in…
-                                    </span>
-                                ) : (
-                                    'Sign in'
-                                )}
-                            </Button>
+                        >
+                            {isLoading ? (
+                                <span className="flex items-center gap-2">
+                                    <Spinner size="sm" className="text-white/70" />
+                                    Signing in…
+                                </span>
+                            ) : (
+                                'Sign in'
+                            )}
+                        </Button>
 
-                            <p className="text-center text-sm text-foreground-tertiary">
-                                Don't have an account?{' '}
-                                <Link href="/auth/signup" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">
-                                    Create one
-                                </Link>
-                            </p>
-                        </Card.Footer>
-                    </Form>
-                </Card>
+                        <p className="text-center text-sm text-foreground-tertiary">
+                            Don't have an account?{' '}
+                            <Link href="/auth/signup" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">
+                                Create one
+                            </Link>
+                        </p>
+                    </Card.Footer>
+                </Form>
+            </Card>
 
-                <Footer />
-            </div>
-        </main>
+        </PageWrapper>
     );
 }
 

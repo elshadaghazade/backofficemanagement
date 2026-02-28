@@ -22,6 +22,7 @@ import Footer from '@/app/components/Footer';
 import Logo from '@/app/components/Logo';
 import AuthCardHeader from '@/app/components/AuthCardHeader';
 import ErrorMessages from '@/app/components/ErrorMessages';
+import PageWrapper from '@/app/components/PageWrapper';
 
 interface FormState {
   firstName: string;
@@ -149,199 +150,191 @@ const SignUpPage: FC = () => {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
+    <PageWrapper>
 
-      <div className="pointer-events-none fixed top-[-20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-violet-600/10 blur-[120px]" />
+      <Card className="w-full border bg-content3 bg-content2 backdrop-blur-sm shadow-2xl">
+        <AuthCardHeader
+          title='Create an account'
+          description='Get started - it only takes a minute'
+        />
 
-      <div className="relative w-full max-w-md">
+        <Form onSubmit={handleSubmit}>
+          <Card.Content className="flex flex-col gap-5 pt-4">
 
-        <Logo />
+            {serverError && (
+              <Alert status="danger">
+                <Alert.Description>{serverError}</Alert.Description>
+              </Alert>
+            )}
 
-        <Card className="w-full border bg-content3 bg-content2 backdrop-blur-sm shadow-2xl">
-          <AuthCardHeader
-            title='Create an account'
-            description='Get started - it only takes a minute'
-          />
-
-          <Form onSubmit={handleSubmit}>
-            <Card.Content className="flex flex-col gap-5 pt-4">
-
-              {serverError && (
-                <Alert status="danger">
-                  <Alert.Description>{serverError}</Alert.Description>
-                </Alert>
-              )}
-
-              <div className="grid grid-cols-2 gap-3">
-                <TextField
-                  name="firstName"
-                  value={values.firstName}
-                  onChange={handleChange('firstName')}
-                  onBlur={handleBlur('firstName')}
-                  isInvalid={!!fieldErrors.firstName}
-                  isDisabled={isLoading}
-                  fullWidth
-                >
-                  <Label className="text-foreground-secondary text-sm">First name</Label>
-                  <Input
-                    placeholder="Jane"
-                    variant="secondary"
-                    className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
-                               focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
-                  />
-                  <ErrorMessages messages={fieldErrors.firstName} />
-                </TextField>
-
-                <TextField
-                  name="lastName"
-                  value={values.lastName}
-                  onChange={handleChange('lastName')}
-                  onBlur={handleBlur('lastName')}
-                  isInvalid={!!fieldErrors.lastName}
-                  isDisabled={isLoading}
-                  fullWidth
-                >
-                  <Label className="text-foreground-secondary text-sm">Last name</Label>
-                  <Input
-                    placeholder="Doe"
-                    variant="secondary"
-                    className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
-                               focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
-                  />
-                  <ErrorMessages messages={fieldErrors.lastName} />
-                </TextField>
-              </div>
-
+            <div className="grid grid-cols-2 gap-3">
               <TextField
-                name="email"
-                type="email"
-                value={values.email}
-                onChange={handleChange('email')}
-                onBlur={handleBlur('email')}
-                isInvalid={!!fieldErrors.email}
+                name="firstName"
+                value={values.firstName}
+                onChange={handleChange('firstName')}
+                onBlur={handleBlur('firstName')}
+                isInvalid={!!fieldErrors.firstName}
                 isDisabled={isLoading}
                 fullWidth
               >
-                <Label className="text-foreground-secondary text-sm">Email address</Label>
+                <Label className="text-foreground-secondary text-sm">First name</Label>
                 <Input
-                  placeholder="you@example.com"
+                  placeholder="Jane"
                   variant="secondary"
                   className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
-                             focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
+                               focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
                 />
-                <ErrorMessages messages={fieldErrors.email} />
+                <ErrorMessages messages={fieldErrors.firstName} />
               </TextField>
 
               <TextField
-                name="password"
-                type="password"
-                value={values.password}
-                onChange={handleChange('password')}
-                onBlur={handleBlur('password')}
-                isInvalid={!!fieldErrors.password}
+                name="lastName"
+                value={values.lastName}
+                onChange={handleChange('lastName')}
+                onBlur={handleBlur('lastName')}
+                isInvalid={!!fieldErrors.lastName}
                 isDisabled={isLoading}
                 fullWidth
               >
-                <Label className="text-foreground-secondary text-sm">Password</Label>
+                <Label className="text-foreground-secondary text-sm">Last name</Label>
                 <Input
-                  placeholder="Your password"
+                  placeholder="Doe"
                   variant="secondary"
                   className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
-                             focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
+                               focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
                 />
+                <ErrorMessages messages={fieldErrors.lastName} />
+              </TextField>
+            </div>
 
-                {values.password && (
-                  <div className="mt-2 space-y-1">
-                    <div className="flex gap-1">
-                      {[1, 2, 3, 4].map((step) => (
-                        <div
-                          key={step}
-                          className={`h-1 flex-1 rounded-full transition-all duration-300 ${strength.score >= step
-                            ? strength.color
-                            : 'bg-white/10'
-                            }`}
-                        />
-                      ))}
-                    </div>
-                    {strength.label && (
-                      <p className={`text-xs ${strength.score <= 1 ? 'text-red-400' :
-                        strength.score === 2 ? 'text-orange-400' :
-                          strength.score === 3 ? 'text-yellow-400' :
-                            'text-emerald-400'
-                        }`}>
-                        {strength.label}
-                      </p>
-                    )}
+            <TextField
+              name="email"
+              type="email"
+              value={values.email}
+              onChange={handleChange('email')}
+              onBlur={handleBlur('email')}
+              isInvalid={!!fieldErrors.email}
+              isDisabled={isLoading}
+              fullWidth
+            >
+              <Label className="text-foreground-secondary text-sm">Email address</Label>
+              <Input
+                placeholder="you@example.com"
+                variant="secondary"
+                className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
+                             focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
+              />
+              <ErrorMessages messages={fieldErrors.email} />
+            </TextField>
+
+            <TextField
+              name="password"
+              type="password"
+              value={values.password}
+              onChange={handleChange('password')}
+              onBlur={handleBlur('password')}
+              isInvalid={!!fieldErrors.password}
+              isDisabled={isLoading}
+              fullWidth
+            >
+              <Label className="text-foreground-secondary text-sm">Password</Label>
+              <Input
+                placeholder="Your password"
+                variant="secondary"
+                className="bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
+                             focus:border-violet-500/60 focus:bg-white/[0.07] transition-colors"
+              />
+
+              {values.password && (
+                <div className="mt-2 space-y-1">
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4].map((step) => (
+                      <div
+                        key={step}
+                        className={`h-1 flex-1 rounded-full transition-all duration-300 ${strength.score >= step
+                          ? strength.color
+                          : 'bg-white/10'
+                          }`}
+                      />
+                    ))}
                   </div>
-                )}
-                <ErrorMessages messages={fieldErrors.password} />
-              </TextField>
+                  {strength.label && (
+                    <p className={`text-xs ${strength.score <= 1 ? 'text-red-400' :
+                      strength.score === 2 ? 'text-orange-400' :
+                        strength.score === 3 ? 'text-yellow-400' :
+                          'text-emerald-400'
+                      }`}>
+                      {strength.label}
+                    </p>
+                  )}
+                </div>
+              )}
+              <ErrorMessages messages={fieldErrors.password} />
+            </TextField>
 
-              <TextField
-                name="confirmPassword"
-                type="password"
-                value={values.confirmPassword}
-                onChange={handleChange('confirmPassword')}
-                onBlur={handleBlur('confirmPassword')}
-                isInvalid={!!fieldErrors.confirmPassword}
-                isDisabled={isLoading}
-                fullWidth
-              >
-                <Label className="text-foreground-secondary text-sm">Confirm password</Label>
-                <Input
-                  placeholder="Re-type password"
-                  variant="secondary"
-                  className={`bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
+            <TextField
+              name="confirmPassword"
+              type="password"
+              value={values.confirmPassword}
+              onChange={handleChange('confirmPassword')}
+              onBlur={handleBlur('confirmPassword')}
+              isInvalid={!!fieldErrors.confirmPassword}
+              isDisabled={isLoading}
+              fullWidth
+            >
+              <Label className="text-foreground-secondary text-sm">Confirm password</Label>
+              <Input
+                placeholder="Re-type password"
+                variant="secondary"
+                className={`bg-content1 border-divider text-foreground placeholder:text-foreground-quaternary
                               focus:bg-white/[0.07] transition-colors
                               ${touched.confirmPassword && values.confirmPassword
-                      ? values.confirmPassword === values.password
-                        ? 'focus:border-emerald-500/60 border-emerald-500/30'
-                        : 'focus:border-red-500/60'
-                      : 'focus:border-violet-500/60'
-                    }`}
-                />
-                {touched.confirmPassword && values.confirmPassword && !fieldErrors.confirmPassword && (
-                  <p className="text-emerald-400 text-xs mt-1">Passwords match</p>
-                )}
-                <ErrorMessages messages={fieldErrors.confirmPassword} />
-              </TextField>
-            </Card.Content>
+                    ? values.confirmPassword === values.password
+                      ? 'focus:border-emerald-500/60 border-emerald-500/30'
+                      : 'focus:border-red-500/60'
+                    : 'focus:border-violet-500/60'
+                  }`}
+              />
+              {touched.confirmPassword && values.confirmPassword && !fieldErrors.confirmPassword && (
+                <p className="text-emerald-400 text-xs mt-1">Passwords match</p>
+              )}
+              <ErrorMessages messages={fieldErrors.confirmPassword} />
+            </TextField>
+          </Card.Content>
 
-            <Card.Footer className="flex flex-col gap-4 pt-2 pb-6">
-              <Button
-                type="submit"
-                fullWidth
-                isDisabled={isLoading}
-                className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700
+          <Card.Footer className="flex flex-col gap-4 pt-2 pb-6">
+            <Button
+              type="submit"
+              fullWidth
+              isDisabled={isLoading}
+              className="bg-violet-600 hover:bg-violet-500 active:bg-violet-700
                            text-foreground font-medium h-11 rounded-xl transition-colors
                            disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <Spinner size="sm" className="text-white/70" />
+                  Creating account…
+                </span>
+              ) : (
+                'Create account'
+              )}
+            </Button>
+
+            <p className="text-center text-sm text-foreground-tertiary">
+              Already have an account?{' '}
+              <Link
+                href="/auth/signin"
+                className="text-violet-400 hover:text-violet-300 font-medium transition-colors"
               >
-                {isLoading ? (
-                  <span className="flex items-center gap-2">
-                    <Spinner size="sm" className="text-white/70" />
-                    Creating account…
-                  </span>
-                ) : (
-                  'Create account'
-                )}
-              </Button>
-
-              <p className="text-center text-sm text-foreground-tertiary">
-                Already have an account?{' '}
-                <Link
-                  href="/auth/signin"
-                  className="text-violet-400 hover:text-violet-300 font-medium transition-colors"
-                >
-                  Sign in
-                </Link>
-              </p>
-            </Card.Footer>
-          </Form>
-        </Card>
-
-        <Footer />
-      </div>
-    </main>
+                Sign in
+              </Link>
+            </p>
+          </Card.Footer>
+        </Form>
+      </Card>
+      
+    </PageWrapper>
   );
 }
 
