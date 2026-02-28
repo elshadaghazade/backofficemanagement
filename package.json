@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate": "prisma generate",
+    "migrate:dev": "prisma migrate dev"
   },
   "dependencies": {
     "@heroui/react": "^3.0.0-beta.7",
