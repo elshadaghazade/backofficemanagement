@@ -36,6 +36,145 @@ const SESSION_ACTIVE_COOKIE_OPTIONS = {
   maxAge: 60 * 60 * 24,
 } as const;
 
+/**
+ * @swagger
+ * /api/auth/sign-in:
+ *   post:
+ *     summary: Sign in with email and password
+ *     description: >
+ *       Authenticates a user using email/password. On success, returns an access token in the JSON response,
+ *       sets an HttpOnly refresh_token cookie, and sets a non-HttpOnly session_active cookie for UI state.
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 1
+ *                 maxLength: 128
+ *                 example: S3cretP@ssw0rd
+ *     responses:
+ *       200:
+ *         description: Successfully authenticated.
+ *         headers:
+ *           Set-Cookie:
+ *             description: >
+ *               Sets refresh_token (HttpOnly) and session_active cookies.
+ *               refresh_token Path=/api/auth; session_active Path=/
+ *             schema:
+ *               type: string
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - accessToken
+ *                 - user
+ *             properties:
+ *               accessToken:
+ *                 type: string
+ *                 description: JWT access token.
+ *                 example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *               user:
+ *                 type: object
+ *                 required:
+ *                   - id
+ *                   - firstName
+ *                   - lastName
+ *                   - email
+ *                   - role
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: clx123abc456def789ghi012
+ *                   firstName:
+ *                     type: string
+ *                     example: Elshad
+ *                   lastName:
+ *                     type: string
+ *                     example: Aghayev
+ *                   email:
+ *                     type: string
+ *                     format: email
+ *                     example: user@example.com
+ *                   role:
+ *                     type: string
+ *                     example: user
+ *       400:
+ *         description: Invalid JSON body.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - error
+ *             properties:
+ *               error:
+ *                 type: string
+ *                 example: invalid json
+ *       401:
+ *         description: Invalid email or password.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - error
+ *             properties:
+ *               error:
+ *                 type: string
+ *                 example: invalid email or password.
+ *       403:
+ *         description: User account is inactive.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - error
+ *             properties:
+ *               error:
+ *                 type: string
+ *                 example: Your account is inactive. Please contact an administrator.
+ *       422:
+ *         description: Validation failed.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - error
+ *                 - fieldErrors
+ *             properties:
+ *               error:
+ *                 type: string
+ *                 example: validation failed.
+ *               fieldErrors:
+ *                 type: object
+ *                 additionalProperties:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 example:
+ *                   email:
+ *                     - email is required
+ *                   password:
+ *                     - password is required
+ */
+
 export const POST = async (req: NextRequest) => {
   let body: unknown;
   try {
