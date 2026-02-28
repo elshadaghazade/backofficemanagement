@@ -48,8 +48,6 @@ services:
     container_name: redisinsight
     ports:
       - "5540:5540"
-    volumes:
-      - redisinsight_data:/data
     depends_on:
       redis:
         condition: service_healthy
