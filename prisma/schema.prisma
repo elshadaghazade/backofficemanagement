@@ -18,6 +18,11 @@ enum UserStatus {
   inactive
 }
 
+enum UserRole {
+  user
+  admin
+}
+
 model User {
   id          String     @id @default(uuid())
   firstName   String
@@ -25,6 +30,7 @@ model User {
   email       String     @unique
   password    String
   status      UserStatus @default(active)
+  role        UserRole?   @default(user)
   loginsCount Int        @default(0)
   settings    Json?      @default("{}")
   createdAt   DateTime   @default(now())
