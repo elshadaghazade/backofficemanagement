@@ -1,5 +1,4 @@
 import { Prisma } from "@/lib/generated/prisma/client";
-import { logger } from "@/lib/logger";
 import { getPrisma } from "@/lib/prisma";
 import bcrypt from 'bcryptjs';
 
@@ -14,6 +13,7 @@ const createAdmin = async () => {
         createdAt: new Date(),
         email,
         status: 'active',
+        role: 'admin',
         password: await bcrypt.hash('admin', 12)
     }
 
@@ -36,5 +36,5 @@ const startSeeding = async () => {
 }
 
 startSeeding().catch(err => {
-    logger.error(`Seed error: ${err}`);
+    console.error(`Seed error: ${err}`);
 });

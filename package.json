@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "generate": "prisma generate",
-    "migrate:dev": "prisma migrate dev"
+    "migrate:dev": "prisma migrate dev",
+    "seed": ""
   },
   "dependencies": {
     "@heroui/react": "^3.0.0-beta.7",
