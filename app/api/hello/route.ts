@@ -7,6 +7,11 @@
  *       200:
  *         description: Hello World!
  */
-export async function GET() {
-  return Response.json({ message: 'Hello World!' });
-}
+
+import { withAuth } from "@/lib/withAuth";
+import { NextResponse } from "next/server";
+
+export const GET = withAuth(async (req, user) => {
+
+    return NextResponse.json({ message: user.firstName });
+})
