@@ -1,8 +1,11 @@
+import { getPrisma } from "@/lib/prisma";
+import { deleteRedisSession } from "@/lib/tokenStore";
+import { withAuth } from "@/lib/withAuth";
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
  * @swagger
- * /api/auth/sign-out:
+ * /api/auth/signout:
  *   post:
  *     summary: Sign out
  *     description: Clears auth cookies (refresh_token and session_active).
@@ -24,10 +27,28 @@ import { NextResponse, type NextRequest } from "next/server";
  *             example: {}
  */
 
-export const POST = async (_: NextRequest) => {
-    const res = NextResponse.json({});
+const prisma = getPrisma();
 
-    res.cookies.delete('refresh_token');
-    res.cookies.delete('session_active');
-    return res;
-}
+export const POST = withAuth(async (_, user) => {
+    try {
+
+        await prisma.session.updateMany({
+            where: {
+                userId: user.userId,
+                terminatedAt: null
+            },
+            data: {
+                terminatedAt: new Date()
+            }
+        });
+
+        await deleteRedisSession(user.sessionId);
+
+        const res = NextResponse.json({});
+        res.cookies.delete('refresh_token');
+        res.cookies.delete('session_active');
+        return res;
+    } catch {
+        return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
+    }
+});

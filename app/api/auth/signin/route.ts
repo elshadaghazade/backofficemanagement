@@ -27,7 +27,7 @@ const SESSION_ACTIVE_COOKIE_OPTIONS = {
 
 /**
  * @swagger
- * /api/auth/sign-in:
+ * /api/auth/signin:
  *   post:
  *     summary: Sign in with email and password
  *     description: >
@@ -191,7 +191,7 @@ export const POST = async (req: NextRequest) => {
   const { email, password } = parsed.data;
 
   const user = await getPrisma().user.findUnique({
-    where: { email },
+    where: { email, status: 'active' },
     select: {
       id: true,
       firstName: true,
@@ -234,7 +234,8 @@ export const POST = async (req: NextRequest) => {
   await getPrisma().$transaction(async tx => {
     const _dbSession = await tx.session.findFirst({
       where: {
-        userId: user.id
+        userId: user.id,
+        terminatedAt: null
       },
       select: {
         id: true

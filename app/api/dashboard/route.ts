@@ -194,7 +194,7 @@ export const PUT = withAuth(async (req, user) => {
         const payload = await req.json();
         const parsed = DashboardContentSchema.safeParse(payload);
         if (!parsed.success) {
-            return NextResponse.json({ error: z.treeifyError(parsed.error) })
+            return NextResponse.json({ error: z.treeifyError(parsed.error) }, { status : 400 })
         }
 
         const homePage = await prisma.homePage.findFirst({

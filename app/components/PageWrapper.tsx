@@ -18,7 +18,7 @@ const PageWrapper: FC<PageWrapperPropsType> = ({
 
             <div className="pointer-events-none fixed top-[-20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-violet-600/10 blur-[120px]" />
 
-            <div className="relative w-full max-w-md">
+            <div className="relative w-[75%]">
                 {logo}
                 {children}
                 {footer}

@@ -1,0 +1,255 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.btnPrimary {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+.btnPrimary:hover {
+  background: #1f2937;
+}
+.btnGhost {
+  background: transparent;
+  color: inherit;
+  border-color: #d1d5db;
+}
+.btnGhost:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Table */
+.tableWrap {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+.state {
+  padding: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: #9ca3af;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.table th {
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b7280;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+.table tr:last-child td {
+  border-bottom: none;
+}
+.table tr:hover td {
+  background: #fafafa;
+}
+
+.nameCell {
+  font-weight: 500;
+}
+.muted {
+  color: #6b7280;
+}
+
+/* Badge / Status */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  font-size: 12px;
+  text-transform: capitalize;
+  color: #374151;
+}
+.status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+.statusActive {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.statusInactive {
+  background: #fef9c3;
+  color: #92400e;
+}
+.statusBlocked {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+.link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #4b5563;
+  padding: 0;
+  transition: color 0.15s;
+}
+.link:hover {
+  color: #111827;
+}
+.linkDanger:hover {
+  color: #dc2626;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pages {
+  display: flex;
+  gap: 4px;
+}
+.pageBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+  color: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+.pageBtn:hover {
+  background: #f3f4f6;
+}
+.pageBtnActive {
+  background: #111827;
+  border-color: #111827;
+  color: #fff;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .subtitle {
+    color: #9ca3af;
+  }
+  .btnPrimary {
+    background: #e5e7eb;
+    color: #111827;
+    border-color: #e5e7eb;
+  }
+  .btnPrimary:hover {
+    background: #f3f4f6;
+  }
+  .btnGhost {
+    border-color: #374151;
+  }
+  .btnGhost:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .tableWrap {
+    border-color: #374151;
+  }
+  .table th {
+    background: #1f2937;
+    color: #9ca3af;
+    border-color: #374151;
+  }
+  .table td {
+    border-color: #1f2937;
+  }
+  .table tr:hover td {
+    background: #1a1a1a;
+  }
+  .muted {
+    color: #9ca3af;
+  }
+  .badge {
+    background: #1f2937;
+    border-color: #374151;
+    color: #d1d5db;
+  }
+  .link {
+    color: #9ca3af;
+  }
+  .link:hover {
+    color: #f3f4f6;
+  }
+  .linkDanger:hover {
+    color: #f87171;
+  }
+  .pageBtn {
+    border-color: #374151;
+  }
+  .pageBtn:hover {
+    background: #1f2937;
+  }
+  .pageBtnActive {
+    background: #e5e7eb;
+    border-color: #e5e7eb;
+    color: #111827;
+  }
+}

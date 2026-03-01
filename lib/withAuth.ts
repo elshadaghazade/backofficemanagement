@@ -5,11 +5,12 @@ import type { DecodedToken } from './jwt';
 type AuthenticatedHandler = (
   req: NextRequest,
   user: DecodedToken,
+  ctx: any
 ) => Promise<Response>;
 
 export const withAuth = (handler: AuthenticatedHandler) => {
 
-  return async (req: NextRequest) => {
+  return async (req: NextRequest, ctx: any) => {
     const authorization = req.headers.get('authorization');
     const decoded = await validateBearerToken(authorization);
 
@@ -17,6 +18,6 @@ export const withAuth = (handler: AuthenticatedHandler) => {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    return handler(req, decoded);
+    return handler(req, decoded, ctx);
   }
 }

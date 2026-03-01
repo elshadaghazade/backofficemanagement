@@ -29,7 +29,7 @@ const SESSION_ACTIVE_COOKIE_OPTIONS: Partial<ResponseCookie> = {
 
 /**
  * @swagger
- * /api/auth/sign-up:
+ * /api/auth/signup:
  *   post:
  *     summary: Sign up (create account)
  *     description: >
@@ -211,7 +211,8 @@ export const POST = async (req: NextRequest) => {
 
     let dbSession = await tx.session.findFirst({
       where: {
-        userId: user.id
+        userId: user.id,
+        terminatedAt: null
       },
       select: {
         id: true
