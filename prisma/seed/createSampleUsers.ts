@@ -12,8 +12,8 @@ export const createSampleUsers = async () => {
         bulkData.push({
             firstName: faker.person.firstName(),
             lastName: faker.person.lastName(),
-            email: `${i}${faker.internet.email()}`,
-            password: bcrypt.hashSync(faker.internet.password()),
+            email: `user${i}@gmail.com`,
+            password: bcrypt.hashSync('password'),
             role: 'user',
             status: 'active',
             createdAt: new Date(),
