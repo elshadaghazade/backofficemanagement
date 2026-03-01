@@ -26,6 +26,9 @@ jobs:
 
       - name: Prepare env file
         run: cp .env.test.example .env.test
+      
+      - name: Installin tsx
+        run: npm i tsx
 
       - name: Run E2E
         run: npm run e2e
