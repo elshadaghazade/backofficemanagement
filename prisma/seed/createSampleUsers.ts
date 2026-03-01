@@ -8,7 +8,7 @@ export const createSampleUsers = async () => {
 
     const bulkData: Prisma.UserCreateManyInput[] = [];
     
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 20; i++) {
         bulkData.push({
             firstName: faker.person.firstName(),
             lastName: faker.person.lastName(),
