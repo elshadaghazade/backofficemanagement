@@ -1,8 +1,8 @@
 import { Prisma } from "@/lib/generated/prisma/client";
 import { getPrisma } from "@/lib/prisma";
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 
-const createAdmin = async () => {
+export const createAdmin = async () => {
     const prisma = getPrisma();
     const email = 'admin@example.com';
 
@@ -29,11 +29,3 @@ const createAdmin = async () => {
         select: { id: true }
     });
 }
-
-const startSeeding = async () => {
-    await Promise.all([createAdmin()]);
-}
-
-startSeeding().catch(err => {
-    console.error(`Seed error: ${err}`);
-});

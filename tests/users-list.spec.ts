@@ -21,5 +21,4 @@ test.describe('User Management', () => {
     await page.getByRole('button', { name: 'Delete' }).first().click();
     await expect(page.getByRole('table')).toBeVisible();
   });
-
 });
