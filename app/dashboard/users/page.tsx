@@ -242,33 +242,16 @@ const UserManagement: FC = () => {
                             </div>
 
                             <div className="flex items-center justify-end gap-2">
-                                <Button
-                                    size="sm"
-                                    variant="secondary"
-                                    onPress={() => setIsOpen(false)}
-                                >
-                                    Close
-                                </Button>
-
-                                <Button
-                                    size="sm"
-                                    variant="outline"
-                                    isDisabled={!sessionUrl}
-                                    onPress={() => sessionUrl && window.open(sessionUrl, "_blank", "noopener,noreferrer")}
-                                >
-                                    Open link
-                                </Button>
-
                                 <Link
                                     href="/dashboard/users/sessions"
                                     color="primary"
                                 >
-                                    See all sessions
+                                    See all sessions &raquo;
                                 </Link>
                             </div>
 
                             <div className="text-xs text-foreground-500">
-                                Tip: treat this like a password — share only with the intended user.
+                                Tip: treat this like a password - share only with the intended user.
                             </div>
                         </Modal.Body>
                     </Modal.Dialog>
