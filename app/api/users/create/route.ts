@@ -1,7 +1,7 @@
-import { Prisma } from "@/lib/generated/prisma/client";
-import { getPrisma } from "@/lib/prisma";
-import { userCreateSchema } from "@/lib/validators/user-create";
-import { withAuth } from "@/lib/withAuth";
+import { Prisma } from "../../../../lib/generated/prisma/client";
+import { getPrisma } from "../../../../lib/prisma";
+import { userCreateSchema } from "../../../../lib/validators/user-create";
+import { withAuth } from "../../../../lib/withAuth";
 import { NextResponse } from "next/server";
 import { z } from 'zod';
 import bcrypt from "bcryptjs";

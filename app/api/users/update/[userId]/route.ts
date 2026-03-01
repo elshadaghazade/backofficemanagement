@@ -1,10 +1,10 @@
-import { Prisma } from "@/lib/generated/prisma/client";
-import { getPrisma } from "@/lib/prisma";
-import { withAuth } from "@/lib/withAuth";
+import { Prisma } from "../../../../../lib/generated/prisma/client";
+import { getPrisma } from "../../../../../lib/prisma";
+import { withAuth } from "../../../../../lib/withAuth";
 import { NextResponse } from "next/server";
 import { z } from 'zod';
 import bcrypt from "bcryptjs";
-import { userUpdateSchema } from "@/lib/validators/user-update";
+import { userUpdateSchema } from "../../../../../lib/validators/user-update";
 
 /**
  * @swagger
