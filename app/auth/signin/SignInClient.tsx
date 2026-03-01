@@ -175,9 +175,6 @@ const SignInClient: FC = () => {
                         >
                             <div className="flex items-center justify-between">
                                 <Label className="text-foreground-secondary text-sm">Password</Label>
-                                <Link href="/auth/forgot-password" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">
-                                    Forgot password?
-                                </Link>
                             </div>
                             <Input
                                 placeholder="Your password"

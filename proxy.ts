@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const PUBLIC_ROUTES = ['/auth/signin', '/auth/signup', '/auth/forgot-password'];
-const IGNORED_PREFIXES = ['/_next/static', '/_next/image', '/favicon.ico', '/api'];
+const IGNORED_PREFIXES = ['/_next/static', '/_next/image', '/favicon.ico', '/api', '/images'];
 
 export const proxy = (req: NextRequest) => {
   const { pathname } = req.nextUrl;
