@@ -25,7 +25,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Prepare env file
-        run: cp .env.example .env.test
+        run: cp .env.test.example .env.test
 
       - name: Run E2E
         run: npm run e2e
