@@ -70,7 +70,12 @@ export const POST = async (req: NextRequest) => {
 
   const session = await getRedisSession(decoded.sessionId);
   if (!session || session.refreshJti !== decoded.jti) {
-    return await clearCookiesAndUnauthorized();
+    const jtis: string[] = [decoded.jti];
+    if (session?.refreshJti) {
+      jtis.push(session.refreshJti);
+    }
+
+    return await clearCookiesAndUnauthorized(jtis);
   }
 
   const payload = {
@@ -86,7 +91,7 @@ export const POST = async (req: NextRequest) => {
 
   const patched = await rotateRefreshJti(decoded.sessionId, newJti);
   if (!patched) {
-    return await clearCookiesAndUnauthorized();
+    return await clearCookiesAndUnauthorized([decoded.sessionId, newJti]);
   }
 
   const response = NextResponse.json({ accessToken: newAccessToken });
@@ -101,14 +106,14 @@ export const POST = async (req: NextRequest) => {
   return response;
 }
 
-const clearCookiesAndUnauthorized = async () => {
+const clearCookiesAndUnauthorized = async (jti?: string[]) => {
   const res = NextResponse.json({ error: 'session expired' }, { status: 401 });
-  const jti = res.cookies.get('refresh_token');
 
   res.cookies.delete('refresh_token');
   res.cookies.delete('session_active');
-  if (jti?.value) {
-    await deleteRedisSession(jti.value);
+
+  if (jti?.length) {
+    await deleteRedisSession(...jti);
   }
   return res;
 }

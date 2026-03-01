@@ -9,7 +9,7 @@ import { createRedisSession } from '@/lib/tokenStore';
 import type { RedisSession } from '@/lib/tokenStore';
 import { type SignInResponseType, SignInSchema } from '@/lib/validators/signin';
 
-const REFRESH_COOKIE_OPTIONS = {
+export const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax',
@@ -17,7 +17,7 @@ const REFRESH_COOKIE_OPTIONS = {
   maxAge: 60 * 60 * 24,
 } as const;
 
-const SESSION_ACTIVE_COOKIE_OPTIONS = {
+export const SESSION_ACTIVE_COOKIE_OPTIONS = {
   httpOnly: false,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax',

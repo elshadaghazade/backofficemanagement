@@ -39,6 +39,6 @@ export const rotateRefreshJti = async (sessionId: string, newRefreshJti: string)
     return true;
 }
 
-export async function deleteRedisSession(sessionId: string) {
-    await getRedis().del(`session:${sessionId}`);
+export async function deleteRedisSession(...sessionIds: string[]) {
+    await getRedis().del(...sessionIds.map(sessionId => `session:${sessionId}`));
 }

@@ -20,6 +20,15 @@ export const POST = withAuth(async (_req, user, ctx: { params: Promise<{ userId:
             },
             select: {
                 id: true,
+                user: {
+                    select: {
+                        firstName: true,
+                        lastName: true,
+                        email: true,
+                        role: true,
+                        status: true
+                    }
+                }
             }
         });
 
@@ -28,6 +37,18 @@ export const POST = withAuth(async (_req, user, ctx: { params: Promise<{ userId:
                 data: {
                     userId,
                     createdAt: new Date()
+                },
+                select: {
+                    id: true,
+                    user: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            email: true,
+                            role: true,
+                            status: true
+                        }
+                    }
                 }
             });
 
@@ -39,9 +60,9 @@ export const POST = withAuth(async (_req, user, ctx: { params: Promise<{ userId:
         await createRedisSession(session.id, {
             userId,
             sessionId: session.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            role: user.role,
+            firstName: session.user.firstName,
+            lastName: session.user.lastName,
+            role: session.user.role ?? 'user',
             refreshJti: session.id
         });
 

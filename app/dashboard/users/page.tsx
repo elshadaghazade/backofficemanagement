@@ -20,6 +20,7 @@ const UserManagement: FC = () => {
     const [getUsers, { isLoading, data }] = useLazyUsersListQuery();
     const [removeUser, { isSuccess: removeDone }] = useRemoveUserMutation();
     const [isOpen, setIsOpen] = useState(false);
+    const [sessionUrl, setSessionUrl] = useState('');
 
     const [createSession, {
         data: newSessionData,
@@ -58,10 +59,16 @@ const UserManagement: FC = () => {
         }
 
         setIsOpen(true);
+
+        const sessionUrl = typeof window !== "undefined" && newSessionData?.sessionId ? `${window.location.origin}/joinsession/${newSessionData.sessionId}` : newSessionData?.sessionId ? `http://localhost:3000/joinsession/${newSessionData.sessionId}` : "";
+
+        if (sessionUrl) {
+            setSessionUrl(sessionUrl);
+        }
     }, [newSessionData]);
 
     return (
-        <PageWrapper 
+        <PageWrapper
             logo={<Logo breadcrumb />}
         >
             <div className={styles.root}>
@@ -180,18 +187,69 @@ const UserManagement: FC = () => {
 
             <Modal.Backdrop isOpen={isOpen} onOpenChange={setIsOpen}>
                 <Modal.Container>
-                    <Modal.Dialog className="sm:max-w-[360px]">
+                    <Modal.Dialog className="sm:max-w-[480px]">
                         <Modal.CloseTrigger />
                         <Modal.Header>
-                            <Modal.Heading>NEW SESSION</Modal.Heading>
+                            <Modal.Heading>Session link created</Modal.Heading>
                         </Modal.Header>
-                        <Modal.Body>
-                            <p>
-                                http://localhost:3000/start/{newSessionData?.sessionId}
-                            </p>
-                            <p>
-                                <Link href={'/dashboard/users/sessions'}>See all sessions</Link>
-                            </p>
+
+                        <Modal.Body className="space-y-4">
+                            <div className="text-sm text-foreground-600">
+                                Copy this link and send it to the user. When they open it, they'll be
+                                logged in automatically and continue in this session.
+                            </div>
+
+                            <div className="rounded-lg border border-default-200 bg-default-50 p-3">
+                                <div className="text-xs text-foreground-500 mb-2">Multiple-time login link</div>
+
+                                <div className="flex items-start gap-2">
+                                    <code className="flex-1 text-sm break-all select-all">
+                                        {sessionUrl || "Generating link..."}
+                                    </code>
+
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        isDisabled={!sessionUrl}
+                                        onPress={async () => {
+                                            if (!sessionUrl) return;
+                                            await navigator.clipboard.writeText(sessionUrl);
+                                        }}
+                                    >
+                                        Copy
+                                    </Button>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-end gap-2">
+                                <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    onPress={() => setIsOpen(false)}
+                                >
+                                    Close
+                                </Button>
+
+                                <Button
+                                    size="sm"
+                                    variant="outline"
+                                    isDisabled={!sessionUrl}
+                                    onPress={() => sessionUrl && window.open(sessionUrl, "_blank", "noopener,noreferrer")}
+                                >
+                                    Open link
+                                </Button>
+
+                                <Link
+                                    href="/dashboard/users/sessions"
+                                    color="primary"
+                                >
+                                    See all sessions
+                                </Link>
+                            </div>
+
+                            <div className="text-xs text-foreground-500">
+                                Tip: treat this like a password — share only with the intended user.
+                            </div>
                         </Modal.Body>
                     </Modal.Dialog>
                 </Modal.Container>
