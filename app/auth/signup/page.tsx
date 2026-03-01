@@ -150,7 +150,9 @@ const SignUpPage: FC = () => {
   }
 
   return (
-    <PageWrapper>
+    <PageWrapper
+            logo={<Logo breadcrumb />}
+        >
 
       <Card className="w-full border bg-content3 bg-content2 backdrop-blur-sm shadow-2xl">
         <AuthCardHeader

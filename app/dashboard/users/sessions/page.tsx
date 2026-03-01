@@ -6,6 +6,7 @@ import { type FC, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { SessionType } from "@/lib/validators/user-session-list";
 import { Button } from "@heroui/react";
+import Logo from "@/app/components/Logo";
 
 const UserSessions: FC = () => {
     const [page, setPage] = useState(0);
@@ -43,7 +44,9 @@ const UserSessions: FC = () => {
     const sessions: SessionType[] = data?.data ?? [];
 
     return (
-        <PageWrapper>
+        <PageWrapper
+            logo={<Logo breadcrumb />}
+        >
             <div className="max-w-4xl mx-auto py-8">
                 <div className="mb-6">
                     <Link

@@ -6,8 +6,6 @@ import { withAuth } from "@/lib/withAuth";
 import { NextResponse } from "next/server";
 import { z } from 'zod';
 
-const prisma = getPrisma();
-
 /**
  * @swagger
  * /api/dashboard:
@@ -71,6 +69,8 @@ export interface DashboardResponseType {
 }
 
 export const GET = withAuth(async (_req, _user) => {
+
+    const prisma = getPrisma();
 
     try {
         const homePage = await prisma.homePage.findFirst({
@@ -189,6 +189,8 @@ export const PUT = withAuth(async (req, user) => {
     if (user.role !== 'admin') {
         return NextResponse.json({ error: 'Forbidden'}, { status: 403 })
     }
+
+    const prisma = getPrisma();
 
     try {
         const payload = await req.json();

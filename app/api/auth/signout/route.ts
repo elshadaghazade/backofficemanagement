@@ -27,10 +27,11 @@ import { NextResponse, type NextRequest } from "next/server";
  *             example: {}
  */
 
-const prisma = getPrisma();
-
 export const POST = withAuth(async (_, user) => {
+
     try {
+
+        const prisma = getPrisma();
 
         await prisma.session.updateMany({
             where: {

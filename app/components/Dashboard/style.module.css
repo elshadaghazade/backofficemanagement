@@ -1,5 +1,5 @@
 .dashboard {
-    max-width: 800px;
+    width: 100%;
     margin: 0 auto;
     padding: 32px 24px;
     display: flex;
@@ -163,4 +163,34 @@
     .dashboard-subtitle {
         color: #9ca3af;
     }
+}
+
+.welcome * {
+    overflow-wrap: break-word;
+    white-space: break-word;
+    word-wrap: break-word;
+}
+
+.welcome h1 {
+    font-size: 2rem;
+}
+
+.welcome h2 {
+    font-size: 1.8rem;
+}
+
+.welcome h3 {
+    font-size: 1.6rem;
+}
+
+.welcome h4 {
+    font-size: 1.4rem;
+}
+
+.welcome h5 {
+    font-size: 1.2rem;
+}
+
+.welcome h6 {
+    font-size: 1rem;
 }

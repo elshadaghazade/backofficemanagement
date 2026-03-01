@@ -2,9 +2,8 @@ import { Prisma } from "@/lib/generated/prisma/client";
 import { getPrisma } from "@/lib/prisma";
 import bcrypt from 'bcryptjs';
 
-const prisma = getPrisma();
-
 const createAdmin = async () => {
+    const prisma = getPrisma();
     const email = 'admin@example.com';
 
     const adminUser: Prisma.UserCreateInput = {

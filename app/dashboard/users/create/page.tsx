@@ -6,6 +6,7 @@ import { useState, type FC } from "react";
 import { Button, ErrorMessage, Form, Input, Label, TextField } from "@heroui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Logo from "@/app/components/Logo";
 
 const UserCreate: FC = () => {
     const router = useRouter();
@@ -39,10 +40,12 @@ const UserCreate: FC = () => {
     };
 
     return (
-        <PageWrapper>
-            <div className="max-w-lg mx-auto py-8">
+        <PageWrapper
+            logo={<Logo breadcrumb />}
+        >
+            <div className="mx-auto py-8 w-[70%]">
 
-                <div className="mb-6">
+                <div className="mb-6 w-full">
                     <Link
                         href="/dashboard/users"
                         className="text-sm text-default-500 hover:text-default-700 inline-flex items-center gap-1 mb-4 transition-colors"
@@ -67,7 +70,7 @@ const UserCreate: FC = () => {
                     className="flex flex-col gap-4"
                 >
                     <div className="grid grid-cols-2 gap-3">
-                        <TextField className="w-full max-w-64" name="email" type="text">
+                        <TextField className="w-full" name="email" type="text">
                             <Label>First name</Label>
                             <Input
                                 name="firstName"
@@ -79,7 +82,7 @@ const UserCreate: FC = () => {
                                 onChange={e => setFirstName(e.currentTarget.value)}
                             />
                         </TextField>
-                        <TextField className="w-full max-w-64" name="email" type="text">
+                        <TextField className="w-full" name="email" type="text">
                             <Label>Last name</Label>
                             <Input
                                 name="lastName"
@@ -93,7 +96,7 @@ const UserCreate: FC = () => {
                         </TextField>
                     </div>
 
-                    <TextField className="w-full max-w-64" name="email" type="email">
+                    <TextField className="w-full" name="email" type="email">
                         <Label>Email</Label>
                         <Input
                             name="email"
@@ -106,7 +109,7 @@ const UserCreate: FC = () => {
                         />
                     </TextField>
 
-                    <TextField className="w-full max-w-64" name="email" type="password">
+                    <TextField className="w-full" name="email" type="password">
                         <Label>Password</Label>
                         <Input
                             name="password"

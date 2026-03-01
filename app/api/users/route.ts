@@ -4,8 +4,6 @@ import { withAuth } from "@/lib/withAuth";
 import { NextResponse } from "next/server";
 import { z } from 'zod';
 
-const prisma = getPrisma();
-
 /**
  * @swagger
  * /api/users:
@@ -157,6 +155,8 @@ export const GET = withAuth(async (req, user) => {
         if (user.role !== 'admin') {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
+
+        const prisma = getPrisma();
 
         const parsed = UserListSchema.safeParse({ page: req.nextUrl.searchParams.get('page') });
 

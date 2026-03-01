@@ -1,16 +1,15 @@
-import { signRefreshToken } from "@/lib/jwt";
 import { getPrisma } from "@/lib/prisma";
-import { createRedisSession, deleteRedisSession } from "@/lib/tokenStore";
+import { createRedisSession } from "@/lib/tokenStore";
 import { withAuth } from "@/lib/withAuth";
 import { NextResponse } from "next/server";
-
-const prisma = getPrisma();
 
 export const POST = withAuth(async (_req, user, ctx: { params: Promise<{ userId: string }> }) => {
     try {
         if (user.role !== 'admin') {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
+
+        const prisma = getPrisma();
 
         const userId = (await ctx.params).userId;
 

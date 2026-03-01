@@ -3,8 +3,6 @@ import { getPrisma } from "@/lib/prisma";
 import { withAuth } from "@/lib/withAuth";
 import { NextResponse } from "next/server";
 
-const prisma = getPrisma();
-
 export interface GetUserResponseType {
     status: UserStatus;
     id: string;
@@ -127,6 +125,8 @@ export const GET = withAuth(async (_req, user, ctx: { params: Promise<{ userId: 
     if (user.role !== 'admin') {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
+
+    const prisma = getPrisma();
 
     try {
         const userId = (await ctx.params).userId;

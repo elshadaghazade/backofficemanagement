@@ -7,6 +7,7 @@ import Link from "next/link";
 import styles from "./style.module.css";
 import type { UserType } from "@/lib/validators/user-list";
 import { Button, Modal } from "@heroui/react";
+import Logo from "@/app/components/Logo";
 
 const STATUS_CLASS: Record<string, string> = {
     active: styles.statusActive,
@@ -60,7 +61,9 @@ const UserManagement: FC = () => {
     }, [newSessionData]);
 
     return (
-        <PageWrapper>
+        <PageWrapper 
+            logo={<Logo breadcrumb />}
+        >
             <div className={styles.root}>
 
                 <div className={styles.header}>

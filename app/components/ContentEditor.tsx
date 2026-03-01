@@ -29,8 +29,14 @@ const ContentEditor: FC<ContentEditorPropsType> = ({ content: _content }) => {
 
     return (
         <div className="flex flex-col gap-[10px]">
-        <ReactQuill theme="snow" value={content} onChange={setContent} />
-        <Button isDisabled={contentSaving} onClick={saveContent} fullWidth variant="primary">SAVE</Button>
+            <ReactQuill
+                theme="snow"
+                className="w-full"
+                value={content}
+                onChange={setContent}
+                placeholder="Welcome page content here..."
+            />
+            <Button isDisabled={contentSaving} onClick={saveContent} fullWidth variant="primary">SAVE</Button>
         </div>
     );
 }

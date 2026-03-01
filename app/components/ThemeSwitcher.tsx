@@ -16,6 +16,18 @@ export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({
 }) => {
     const { resolvedTheme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const [savedTheme, setSavedTheme] = useState<'light' | 'dark'>();
+
+    useEffect(() => {
+        if (!window || !mounted) {
+            return;
+        }
+
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') {
+            setSavedTheme(theme);
+        }
+    }, [mounted]);
 
     useEffect(() => setMounted(true), []);
 
@@ -23,7 +35,10 @@ export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({
 
     const toggle = useCallback(() => {
         setTheme(isDark ? 'light' : 'dark');
-    }, [isDark]);
+        if (window && mounted) {
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        }
+    }, [isDark, mounted]);
 
     if (!mounted) {
         return (

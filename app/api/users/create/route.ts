@@ -6,8 +6,6 @@ import { NextResponse } from "next/server";
 import { z } from 'zod';
 import bcrypt from "bcryptjs";
 
-const prisma = getPrisma();
-
 /**
  * @swagger
  * /api/users/create:
@@ -95,6 +93,8 @@ export const POST = withAuth(async (req, user) => {
     if (user.role !== 'admin') {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
+
+    const prisma = getPrisma();
 
     try {
         const parsed = userCreateSchema.safeParse(await req.json());

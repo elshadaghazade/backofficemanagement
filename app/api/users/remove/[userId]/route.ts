@@ -1,8 +1,6 @@
 import { getPrisma } from "@/lib/prisma";
 import { withAuth } from "@/lib/withAuth";
-import { NextResponse, type NextRequest } from "next/server";
-
-const prisma = getPrisma();
+import { NextResponse } from "next/server"
 
 /**
  * @swagger
@@ -75,10 +73,11 @@ const prisma = getPrisma();
  */
 
 export const DELETE = withAuth(async (_req, user, ctx: { params: Promise<{ userId: string }>}) => {
-
     if (user.role !== 'admin') {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
+
+    const prisma = getPrisma();
     
     try {
         const userId = (await ctx.params).userId;

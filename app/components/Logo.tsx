@@ -1,7 +1,14 @@
+import { Breadcrumbs } from "@heroui/react";
 import Link from "next/link";
 import type { FC } from "react";
 
-const Logo: FC = () => {
+interface LogoPropsType {
+    breadcrumb?: boolean;
+}
+
+const Logo: FC<LogoPropsType> = ({
+    breadcrumb
+}) => {
     return (
         <div className="mb-8 text-center">
             <Link href={'/'}>
@@ -10,6 +17,17 @@ const Logo: FC = () => {
                     <span className="text-foreground font-semibold tracking-wide text-lg">Back Office Management</span>
                 </span>
             </Link>
+            {breadcrumb ? (
+                <div className="flex justify-center items-center mt-[20px]">
+                    <Breadcrumbs separator=" | ">
+                        <Breadcrumbs.Item href="#"></Breadcrumbs.Item>
+                        <Breadcrumbs.Item href="/">Dashboard</Breadcrumbs.Item>
+                        <Breadcrumbs.Item href="/dashboard/users">Users</Breadcrumbs.Item>
+                        <Breadcrumbs.Item href="/dashboard/users/sessions">Sessions</Breadcrumbs.Item>
+                        <Breadcrumbs.Item href="#"></Breadcrumbs.Item>
+                    </Breadcrumbs>
+                </div>
+            ) : ''}
         </div>
     );
 }

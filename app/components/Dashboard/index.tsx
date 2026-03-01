@@ -63,10 +63,12 @@ const Dashboard: FC<DashboardPropsType> = ({ userInfo }) => {
 
       <div className={style["dashboard-section"]}>
         {content?.content && userInfo.role === 'user' ? (
-          <div
-            className={style["content-body"]}
-            dangerouslySetInnerHTML={{ __html: content.content }}
-          />
+          <div className={style.welcome}>
+            <div
+              className={style["content-body"]}
+              dangerouslySetInnerHTML={{ __html: content.content }}
+            />
+          </div>
         ) : userInfo.role === 'admin' ? (
           <ContentEditor
             content={content?.content ?? ''}

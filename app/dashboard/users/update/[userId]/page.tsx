@@ -7,6 +7,7 @@ import { Button, Form, Input, Label, ListBox, Select, TextField } from "@heroui/
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import type { UserStatus } from "@/lib/generated/prisma/enums";
+import Logo from "@/app/components/Logo";
 
 const UserUpdate: FC = () => {
     const router = useRouter();
@@ -62,7 +63,9 @@ const UserUpdate: FC = () => {
     };
 
     return (
-        <PageWrapper>
+        <PageWrapper
+            logo={<Logo breadcrumb />}
+        >
             <div className="max-w-lg mx-auto py-8">
                 <div className="mb-6">
                     <Link

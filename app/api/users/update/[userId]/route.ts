@@ -5,9 +5,6 @@ import { NextResponse } from "next/server";
 import { z } from 'zod';
 import bcrypt from "bcryptjs";
 import { userUpdateSchema } from "@/lib/validators/user-update";
-import { id } from "zod/v4/locales";
-
-const prisma = getPrisma();
 
 /**
  * @swagger
@@ -100,6 +97,8 @@ export const PATCH = withAuth(async (req, user, ctx: { params: Promise<{ userId:
     if (user.role !== 'admin') {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
+
+    const prisma = getPrisma();
 
     try {
         const parsed = userUpdateSchema.safeParse(await req.json());
