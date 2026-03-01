@@ -3,10 +3,31 @@ import {
     SESSION_ACTIVE_COOKIE_OPTIONS 
 } from "@/app/api/auth/signin/route";
 import { signRefreshToken, verifyRefreshToken } from "@/lib/jwt";
+import { getPrisma } from "@/lib/prisma";
 import { getRedisSession } from "@/lib/tokenStore";
 import { NextRequest, NextResponse } from "next/server";
 
 const joinToSession = async (sessionId: string, res: NextResponse) => {
+
+    const prisma = getPrisma();
+
+    const exists = await prisma.session.count({
+        where: {
+            id: sessionId,
+            terminatedAt: null,
+            user: {
+                role: 'user',
+                status: 'active'
+            }
+        },
+        take: 1,
+        skip: 0
+    }) > 0;
+
+    if (!exists) {
+        return;
+    }
+
     const session = await getRedisSession(sessionId);
     if (!session) {
         return;

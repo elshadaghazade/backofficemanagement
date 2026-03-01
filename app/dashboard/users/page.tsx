@@ -8,6 +8,7 @@ import styles from "./style.module.css";
 import type { UserType } from "@/lib/validators/user-list";
 import { Button, Modal } from "@heroui/react";
 import Logo from "@/app/components/Logo";
+import { toast } from "react-toastify";
 
 const STATUS_CLASS: Record<string, string> = {
     active: styles.statusActive,
@@ -24,8 +25,27 @@ const UserManagement: FC = () => {
 
     const [createSession, {
         data: newSessionData,
-        isLoading: sessionIsCreating
+        isLoading: sessionIsCreating,
+        error: sessionError,
+        isError: isSessionError,
     }] = useCreateSessionMutation();
+
+    useEffect(() => {
+        if (!isSessionError) {
+            return;
+        }
+
+        const error = sessionError as { data?: { error?: string } };
+        
+        if (!error?.data?.error) {
+            return;
+        }
+
+        toast.error(error.data.error, {
+            autoClose: 7000,
+            position: 'top-center'
+        });
+    }, [isSessionError, sessionError, toast]);
 
     useEffect(() => {
         getUsers({ page });

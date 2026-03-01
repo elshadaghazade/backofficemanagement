@@ -3,9 +3,9 @@ import { createRedisSession } from "@/lib/tokenStore";
 import { withAuth } from "@/lib/withAuth";
 import { NextResponse } from "next/server";
 
-export const POST = withAuth(async (_req, user, ctx: { params: Promise<{ userId: string }> }) => {
+export const POST = withAuth(async (_req, _user, ctx: { params: Promise<{ userId: string }> }) => {
     try {
-        if (user.role !== 'admin') {
+        if (_user.role !== 'admin') {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
@@ -13,22 +13,31 @@ export const POST = withAuth(async (_req, user, ctx: { params: Promise<{ userId:
 
         const userId = (await ctx.params).userId;
 
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+                status: 'active',
+                role: 'user'
+            },
+            select: { 
+                id: true,
+                firstName: true,
+                lastName: true,
+                role: true 
+            }
+        });
+
+        if (!user) {
+            return NextResponse.json({ error: 'User is not active' }, { status: 403 });
+        }
+
         let session = await prisma.session.findFirst({
             where: {
                 userId,
-                terminatedAt: null
+                terminatedAt: null,
             },
             select: {
                 id: true,
-                user: {
-                    select: {
-                        firstName: true,
-                        lastName: true,
-                        email: true,
-                        role: true,
-                        status: true
-                    }
-                }
             }
         });
 
@@ -39,16 +48,7 @@ export const POST = withAuth(async (_req, user, ctx: { params: Promise<{ userId:
                     createdAt: new Date()
                 },
                 select: {
-                    id: true,
-                    user: {
-                        select: {
-                            firstName: true,
-                            lastName: true,
-                            email: true,
-                            role: true,
-                            status: true
-                        }
-                    }
+                    id: true
                 }
             });
 
@@ -60,9 +60,9 @@ export const POST = withAuth(async (_req, user, ctx: { params: Promise<{ userId:
         await createRedisSession(session.id, {
             userId,
             sessionId: session.id,
-            firstName: session.user.firstName,
-            lastName: session.user.lastName,
-            role: session.user.role ?? 'user',
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role ?? 'user',
             refreshJti: session.id
         });
 

@@ -10,7 +10,8 @@
     "generate": "prisma generate",
     "migrate:dev": "prisma migrate dev",
     "seed": "npx prisma db seed",
-    "e2e": "dotenv -e .env.test -- sh -c \"docker compose --env-file .env.test -f infra/docker-compose.test.yaml up -d --build && prisma migrate deploy && prisma db seed && playwright test && docker compose -f infra/docker-compose.test.yaml down\""
+    "docker": "docker compose -f infra/docker-compose.yaml up -d --wait",
+    "e2e": "dotenv -e .env.test -- sh -c \"docker compose --env-file .env.test -f infra/docker-compose.test.yaml up -d --build --wait && prisma migrate deploy && prisma db seed && playwright test && docker compose -f infra/docker-compose.test.yaml down\""
   },
   "dependencies": {
     "@heroui/react": "^3.0.0-beta.7",
