@@ -1,5 +1,5 @@
-import { Prisma } from "@/lib/generated/prisma/client";
-import { getPrisma } from "@/lib/prisma";
+import { Prisma } from "../../lib/generated/prisma/client";
+import { getPrisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 
 export const createAdmin = async () => {
