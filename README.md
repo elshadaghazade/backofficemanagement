@@ -2,6 +2,10 @@
 
 A full-stack back-office application for registering and managing users, built with Next.js 15, TypeScript, PostgreSQL, and Redis. The application provides a secure admin dashboard with user management, session tracking, theme customization, and automated end-to-end testing.
 
+## DEMO VIDEO
+
+[WATCH THIS!!!](https://youtu.be/ETcsZ8-Qa5Y)
+
 ---
 
 ## Table of Contents
