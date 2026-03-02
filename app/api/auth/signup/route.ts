@@ -250,13 +250,13 @@ export const POST = async (req: NextRequest) => {
     firstName: user.firstName,
     lastName: user.lastName,
     role: 'user',
-    refreshJti,
+    refreshJti: refreshJti ?? '',
   };
 
   await createRedisSession(dbSession.id, redisSession);
 
   const response = NextResponse.json<SignUpResponseType>({
-    accessToken,
+    accessToken: accessToken ?? '',
     user: {
       id: user.id,
       firstName: user.firstName,
@@ -266,7 +266,7 @@ export const POST = async (req: NextRequest) => {
     },
   }, { status: 201 });
 
-  response.cookies.set('refresh_token', refreshToken, REFRESH_COOKIE_OPTIONS);
+  response.cookies.set('refresh_token', refreshToken ?? '', REFRESH_COOKIE_OPTIONS);
   response.cookies.set('session_active', 'true', SESSION_ACTIVE_COOKIE_OPTIONS);
 
   return response;

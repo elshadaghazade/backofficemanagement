@@ -89,13 +89,13 @@ export const POST = async (req: NextRequest) => {
   const { token: newAccessToken } = await signAccessToken(payload);
   const { token: newRefreshToken, jti: newJti } = await signRefreshToken(session.sessionId, payload);
 
-  const patched = await rotateRefreshJti(decoded.sessionId, newJti);
+  const patched = await rotateRefreshJti(decoded.sessionId, newJti ?? '');
   if (!patched) {
-    return await clearCookiesAndUnauthorized([decoded.sessionId, newJti]);
+    return await clearCookiesAndUnauthorized([decoded.sessionId, newJti ?? '']);
   }
 
   const response = NextResponse.json({ accessToken: newAccessToken });
-  response.cookies.set('refresh_token', newRefreshToken, {
+  response.cookies.set('refresh_token', newRefreshToken ?? '', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',

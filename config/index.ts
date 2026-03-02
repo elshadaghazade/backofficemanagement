@@ -25,7 +25,9 @@ export const configSchema = z.object({
 
 export type Config = z.infer<typeof configSchema>;
 
-export const config = configSchema.parse({
+const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+
+const _config = {
     db: {
         postgres: {
             database: process.env.POSTGRES_DB ?? '',
@@ -46,4 +48,6 @@ export const config = configSchema.parse({
     auth: {
         secret: process.env.AUTH_SECRET ?? '',
     }
-});
+}
+
+export const config = !isBuildPhase ? configSchema.parse(_config) : _config;

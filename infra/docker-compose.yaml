@@ -1,21 +1,49 @@
 services:
+  app:
+    build:
+      context: ../
+      dockerfile: infra/Dockerfile
+    container_name: backofficemanagement_app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      POSTGRES_DB: backofficemanagement
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: "5432"
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/backofficemanagement"
+      REDIS_URL: "redis://redis:6379"
+      ACCESS_TOKEN_SECRET: "HvQoSdWwuw4ZtHRIKzWVznpwfGcM7wCw"
+      REFRESH_TOKEN_SECRET: "Px8ysQVHyeCAWfQHRMvfyiFpGgVoi57u"
+      AUTH_SECRET: "CMmgjvGXnfyBdZSUKVkdvjy2LWyfW9Hp"
+      NEXTAUTH_URL: "http://localhost:3000"
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - backofficemanagement_network
+
   postgres:
     image: postgres:16-alpine
     container_name: backofficemanagement_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-backofficemanagement}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      POSTGRES_DB: backofficemanagement
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-backofficemanagement}"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d backofficemanagement"]
       interval: 10s
-      timeout:  5s
-      retries:  5
+      timeout: 5s
+      retries: 5
       start_period: 10s
     networks:
       - backofficemanagement_network
@@ -30,39 +58,35 @@ services:
       --appendfsync everysec
       --maxmemory 256mb
       --maxmemory-policy allkeys-lru
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
-      timeout:  5s
-      retries:  5
+      timeout: 5s
+      retries: 5
       start_period: 5s
     networks:
       - backofficemanagement_network
-    
+
   redisinsight:
     image: redis/redisinsight:latest
-    container_name: redisinsight
+    container_name: backofficemanagement_redisinsight
+    restart: unless-stopped
     ports:
       - "5540:5540"
     environment:
-      - RI_REDIS_HOST=redis
-      - RI_REDIS_PORT=${REDIS_PORT:-6379}
+      RI_REDIS_HOST: redis
+      RI_REDIS_PORT: "6379"
     depends_on:
       redis:
         condition: service_healthy
-    restart: unless-stopped
     networks:
       - backofficemanagement_network
 
 volumes:
   postgres_data:
-    driver: local
   redis_data:
-    driver: local
 
 networks:
   backofficemanagement_network:

@@ -9,7 +9,6 @@ const startSeeding = async () => {
         ]);
     } catch (err: any) {
         console.error("Seed error:", err.toString());
-        process.exit(0);
     }
 }
 

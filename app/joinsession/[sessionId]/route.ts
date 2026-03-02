@@ -41,7 +41,7 @@ const joinToSession = async (sessionId: string, res: NextResponse) => {
         role: session.role
     });
 
-    res.cookies.set('refresh_token', token, REFRESH_COOKIE_OPTIONS);
+    res.cookies.set('refresh_token', token ?? '', REFRESH_COOKIE_OPTIONS);
     res.cookies.set('session_active', 'true', SESSION_ACTIVE_COOKIE_OPTIONS);
 }
 

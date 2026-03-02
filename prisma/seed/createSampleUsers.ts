@@ -21,6 +21,7 @@ export const createSampleUsers = async () => {
     }
 
     await prisma.user.createMany({
-        data: bulkData
+        data: bulkData,
+        skipDuplicates: true
     });
 }
